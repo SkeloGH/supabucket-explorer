@@ -1,0 +1,10 @@
+node_modules/
+.vite/
+packages/
+dist/
+out/
+*.config.mjs
+shims-vue.d.ts
+src/preload/
+src/main/types.d.ts
+
