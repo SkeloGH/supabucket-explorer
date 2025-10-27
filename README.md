@@ -25,6 +25,9 @@ A desktop application for exploring and downloading files from Supabase Storage 
 
 - Node.js (v16 or higher)
 - Supabase project with storage configured
+- A supabase user with an associated profile.role = 'admin'
+- An storage.buckets read access policy for authenticated users where profile.role = 'admin'
+- An storage.objects read access policy for authenticated users where profile.role = 'admin' on each bucket
 
 ### Installation
 
