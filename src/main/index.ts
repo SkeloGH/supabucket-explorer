@@ -2,7 +2,11 @@ import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import fs from 'node:fs';
 import https from 'node:https';
 import http from 'node:http';
+import path from 'node:path';
 import started from 'electron-squirrel-startup';
+
+// Type declaration for the Vite window name injected by Electron Forge
+declare const MAIN_WINDOW_VITE_NAME: string;
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (started) {
@@ -22,12 +26,16 @@ const createWindow = () => {
     },
   });
 
-  // and load the index.html of the app.
-  const devServerUrl = 'http://localhost:5173';
-  mainWindow.loadURL(devServerUrl);
-
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // Load the app - either from dev server or production build
+  // In development, app.isPackaged is false. In production, it's true
+  if (app.isPackaged) {
+    // Production build - load from bundled files
+    mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
+  } else {
+    // Development - load from Vite dev server
+    mainWindow.loadURL('http://localhost:5173');
+    mainWindow.webContents.openDevTools();
+  }
 };
 
 // IPC Handlers
